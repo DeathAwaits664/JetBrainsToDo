@@ -131,7 +131,7 @@ public class ToDoList {
 
 
                 if (!t.getDone())
-                    f.format("%d. %5s %b %b%n", this.taskList.indexOf(t), t.getToDoText(), t.getRead(), t.getDone());
+                    f.format("%d. %5s %b %b%n", this.taskList.indexOf(t) + 1, t.getToDoText(), t.getRead(), t.getDone());
 
 
             }
@@ -143,7 +143,7 @@ public class ToDoList {
             for (ToDo t : this.taskList) {
 
 
-                f.format("%d. %s %b %b%n", this.taskList.indexOf(t), t.getToDoText(), t.getRead(), t.getDone());
+                f.format("%d. %s %b %b%n", this.taskList.indexOf(t) + 1, t.getToDoText(), t.getRead(), t.getDone());
 
 
             }

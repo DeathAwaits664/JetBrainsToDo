@@ -92,7 +92,7 @@ public class ConsoleReader {
                 }
 
                 case "REMOVE": {
-                    int index = Integer.parseInt(arg);
+                    int index = Integer.parseInt(arg) - 1;
                     if (toDoList.removeToDoFromList(index)) {
                     } else {
                         System.out.println("There is no such TODO");
@@ -101,7 +101,7 @@ public class ConsoleReader {
                 }
 
                 case "COMPLETE": {
-                    int index = Integer.parseInt(arg);
+                    int index = Integer.parseInt(arg) - 1;
                     if (this.toDoList.completeToDo(index)) {
                     } else {
                         System.out.println("There is no such TODO");
@@ -111,7 +111,7 @@ public class ConsoleReader {
 
                 }
                 case "READ": {
-                    int index = Integer.parseInt(arg);
+                    int index = Integer.parseInt(arg) - 1;
                     if (this.toDoList.readToDo(index)) {
                     } else {
                         System.out.println("There is no such TODO");
