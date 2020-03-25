@@ -1,20 +1,20 @@
 import java.util.Date;
 
-public class ToDo {
-    private int toDoId;
-    private String toDoText;
+public class Task {
+    private int taskId;
+    private String taskText;
     private Date creationTime;
     private Boolean isDone;
     private Boolean isRead;
 
-    public ToDo() {
-        this.toDoText = "";
+    public Task() {
+        this.taskText = "";
         this.creationTime = new Date();
         this.isDone = false;
     }
 
-    public ToDo(String taskText) {
-        this.toDoText = taskText;
+    public Task(String taskText) {
+        this.taskText = taskText;
         this.creationTime = new Date();
         this.isDone = false;
         this.isRead = false;
@@ -32,20 +32,20 @@ public class ToDo {
         return creationTime;
     }
 
-    public void setToDoId(int taskId) {
-        this.toDoId = taskId;
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
-    public int getToDoId() {
-        return toDoId;
+    public int getTaskId() {
+        return taskId;
     }
 
-    public void setToDoText(String taskText) {
-        this.toDoText = taskText;
+    public void setTaskText(String taskText) {
+        this.taskText = taskText;
     }
 
-    public String getToDoText() {
-        return toDoText;
+    public String getTaskText() {
+        return taskText;
     }
 
     public void setDone(Boolean done) {

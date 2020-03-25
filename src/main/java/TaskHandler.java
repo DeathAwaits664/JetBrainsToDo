@@ -9,11 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ToDoList {
-    private List<ToDo> taskList;
+public class TaskHandler {
+    private List<Task> taskList;
     private String path;
 
-    public ToDoList(String path) throws IOException {
+    public TaskHandler(String path) throws IOException {
         this.path = path;
         this.taskList = loadList();
 
@@ -21,7 +21,7 @@ public class ToDoList {
     }
 
 
-    public Boolean addToDoToList(ToDo t) {
+    public Boolean addTaskToList(Task t) {
         try {
             this.taskList.add(t);
             return true;
@@ -30,9 +30,9 @@ public class ToDoList {
         }
     }
 
-    public Boolean completeToDo(int index) {
+    public Boolean completeTask(int index) {
         try {
-            ToDo td = this.taskList.get(index);
+            Task td = this.taskList.get(index);
             td.setDone(true);
             return true;
         } catch (IndexOutOfBoundsException e) {
@@ -40,9 +40,9 @@ public class ToDoList {
         }
     }
 
-    public Boolean readToDo(int index) {
+    public Boolean readTask(int index) {
         try {
-            ToDo td = this.taskList.get(index);
+            Task td = this.taskList.get(index);
             td.setRead(true);
             return true;
         } catch (IndexOutOfBoundsException e) {
@@ -50,7 +50,7 @@ public class ToDoList {
         }
     }
 
-    public Boolean removeToDoFromList(int t) {
+    public Boolean removeTaskFromList(int t) {
         try {
 
 
@@ -63,7 +63,7 @@ public class ToDoList {
     }
 
 
-    public List<ToDo> loadList() throws IOException {
+    public List<Task> loadList() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             FileReader fr = new FileReader(this.path);
@@ -89,31 +89,24 @@ public class ToDoList {
             ObjectMapper objectMapper = new ObjectMapper();
 
             CollectionType javaType = objectMapper.getTypeFactory()
-                    .constructCollectionType(List.class, ToDo.class);
+                    .constructCollectionType(List.class, Task.class);
 
 
-            List<ToDo> tL = objectMapper.readValue(
-                    result, javaType);
-
-
-            return tL;
+            return objectMapper.readValue(result, javaType);
         }
 
 
     }
 
-    public void saveList() throws IOException {
+    public String saveList() {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(new File(this.path), this.taskList);
+            return "Successfuly saved";
         } catch (IOException ex) {
+            return "Can't create file";
 
-
-            System.out.println("We could not find the TODO-json file, so we decided to create it ourselves");
-            File file = new File(path);
-            file.createNewFile();
-            saveList();
         }
 
 
@@ -127,11 +120,11 @@ public class ToDoList {
         if (this.taskList.isEmpty()) return "Empty TODO-list...";
 
         if (printOnlyNotDone) {
-            for (ToDo t : this.taskList) {
+            for (Task t : this.taskList) {
 
 
                 if (!t.getDone())
-                    f.format("%d. %5s %b %b%n", this.taskList.indexOf(t) + 1, t.getToDoText(), t.getRead(), t.getDone());
+                    f.format("%d. %5s %b %b%n", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
 
 
             }
@@ -140,10 +133,10 @@ public class ToDoList {
         } else {
 
 
-            for (ToDo t : this.taskList) {
+            for (Task t : this.taskList) {
 
 
-                f.format("%d. %s %b %b%n", this.taskList.indexOf(t) + 1, t.getToDoText(), t.getRead(), t.getDone());
+                f.format("%d. %s %b %b%n", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
 
 
             }
