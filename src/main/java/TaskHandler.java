@@ -204,33 +204,9 @@ public class TaskHandler {
     public String printList(Boolean printOnlyNotDone) {
         Formatter f = new Formatter();
         f.format("№  Task Read Done\n");
-
         if (this.taskList.isEmpty()) return "Empty TODO-list...";
-
-        if (printOnlyNotDone) {
-            for (TaskEntity t : this.taskList) {
-
-
-                if (!t.getDone()) {
-                    f.format("%d. %5s %b %b", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
-                    if (t.getDeleted()) f.format(" DELETED");
-                    f.format("%n");
-                }
-
-            }
-
-
-        } else {
-
-
-            for (TaskEntity t : this.taskList) {
-
-                f.format("%d. %5s %b %b", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
-                if (t.getDeleted()) f.format(" DELETED");
-                f.format("%n");
-            }
-        }
-
+        taskList.stream().filter(t -> !printOnlyNotDone || t.getDone() == false)
+                .forEach(t -> f.format("%d. %5s %b %b %s %n", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone(), t.getDeleted() == true ? "DELETED" : ""));
         return f.toString();
     }
 
