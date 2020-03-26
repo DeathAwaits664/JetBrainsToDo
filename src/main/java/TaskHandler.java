@@ -9,10 +9,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TaskHandler {
-    private List<Task> taskList;
-    private String path;
 
+/**
+ * The type Task handler.
+ */
+public class TaskHandler {
+    /**
+     * List of all tasks
+     */
+    private List<TaskEntity> taskList;
+
+    /**
+     * Variable to store the path to the file to which our list will be saved
+     */
+    private final String path;
+
+    /**
+     * Instantiates a new Task handler.
+     *
+     * @param path the path to file
+     * @throws IOException the io exception
+     */
     public TaskHandler(String path) throws IOException {
         this.path = path;
         this.taskList = loadList();
@@ -21,7 +38,13 @@ public class TaskHandler {
     }
 
 
-    public Boolean addTaskToList(Task t) {
+    /**
+     * Add task to list boolean.
+     *
+     * @param t New task
+     * @return true - success, false - fails
+     */
+    public Boolean addTaskToList(TaskEntity t) {
         try {
             this.taskList.add(t);
             return true;
@@ -30,26 +53,69 @@ public class TaskHandler {
         }
     }
 
+    /**
+     * Mark task as completed.
+     *
+     * @param index Task index in list
+     * @return true - success, false - fails
+     */
     public Boolean completeTask(int index) {
         try {
-            Task td = this.taskList.get(index);
-            td.setDone(true);
+            TaskEntity td = this.taskList.get(index);
+            if (!td.getDeleted()) {
+                td.setDone(true);
+            } else return false;
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
     }
 
+    /**
+     * Mark task as deleted boolean.
+     *
+     * @param index Task index in list
+     * @return true - success, false - fails
+     */
+    public Boolean markTaskAsDeleted(int index) {
+        try {
+            TaskEntity td = this.taskList.get(index);
+            if (!td.getDeleted()) {
+                td.setDeleted(true);
+            } else return false;
+            return true;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+
+
+    }
+
+
+    /**
+     * Mark task as read.
+     *
+     * @param index Task index in list
+     * @return true - success, false - fails
+     */
     public Boolean readTask(int index) {
         try {
-            Task td = this.taskList.get(index);
-            td.setRead(true);
+            TaskEntity td = this.taskList.get(index);
+            if (!td.getDeleted()) {
+                td.setRead(true);
+            } else return false;
             return true;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
     }
 
+    /**
+     * Remove task from list.
+     *
+     * @param t Task to remove
+     * @return true - success, false - fails
+     */
     public Boolean removeTaskFromList(int t) {
         try {
 
@@ -63,7 +129,15 @@ public class TaskHandler {
     }
 
 
-    public List<Task> loadList() throws IOException {
+    /**
+     * Loads a to-do list along the path specified in the constructor,
+     * loading occurs when the application starts.
+     * If the file is missing, an empty file is created and the default collection is empty.
+     *
+     * @return List from the file
+     * @throws IOException the io exception
+     */
+    public List<TaskEntity> loadList() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             FileReader fr = new FileReader(this.path);
@@ -89,7 +163,7 @@ public class TaskHandler {
             ObjectMapper objectMapper = new ObjectMapper();
 
             CollectionType javaType = objectMapper.getTypeFactory()
-                    .constructCollectionType(List.class, Task.class);
+                    .constructCollectionType(List.class, TaskEntity.class);
 
 
             return objectMapper.readValue(result, javaType);
@@ -98,12 +172,20 @@ public class TaskHandler {
 
     }
 
+    /**
+     * Save list to the file. Before writing to a file,
+     * it checks the collection for tasks marked as deleted and deletes them
+     * If the file does not exist at the time of saving, automatically creates it. If the file fails to create throws an exception.
+     *
+     * @return String
+     */
     public String saveList() {
 
+        this.taskList.removeIf(TaskEntity::getDeleted);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(new File(this.path), this.taskList);
-            return "Successfuly saved";
+            return "Successfully saved";
         } catch (IOException ex) {
             return "Can't create file";
 
@@ -113,19 +195,27 @@ public class TaskHandler {
     }
 
 
+    /**
+     * If true, it returns only tasks that have not been completed in string format, otherwise it returns all tasks in string format.
+     *
+     * @param printOnlyNotDone true - returns not completed, false - returns all
+     * @return Collection in string format.
+     */
     public String printList(Boolean printOnlyNotDone) {
         Formatter f = new Formatter();
-        f.format("№  Task Readed Done\n");
+        f.format("№  Task Read Done\n");
 
         if (this.taskList.isEmpty()) return "Empty TODO-list...";
 
         if (printOnlyNotDone) {
-            for (Task t : this.taskList) {
+            for (TaskEntity t : this.taskList) {
 
 
-                if (!t.getDone())
-                    f.format("%d. %5s %b %b%n", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
-
+                if (!t.getDone()) {
+                    f.format("%d. %5s %b %b", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
+                    if (t.getDeleted()) f.format(" DELETED");
+                    f.format("%n");
+                }
 
             }
 
@@ -133,12 +223,11 @@ public class TaskHandler {
         } else {
 
 
-            for (Task t : this.taskList) {
+            for (TaskEntity t : this.taskList) {
 
-
-                f.format("%d. %s %b %b%n", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
-
-
+                f.format("%d. %5s %b %b", this.taskList.indexOf(t) + 1, t.getTaskText(), t.getRead(), t.getDone());
+                if (t.getDeleted()) f.format(" DELETED");
+                f.format("%n");
             }
         }
 

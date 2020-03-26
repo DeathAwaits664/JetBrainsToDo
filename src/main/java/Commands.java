@@ -3,8 +3,10 @@ public enum Commands {
     ADD {
         @Override
         public String execute(TaskHandler taskHandler, String arg) {
-            taskHandler.addTaskToList(new Task(arg));
-            return "Task was successfully added";
+
+            if (taskHandler.addTaskToList(new TaskEntity(arg)))
+                return "Task was successfully added";
+            else return "Something goes wrong";
         }
 
     },
@@ -15,7 +17,9 @@ public enum Commands {
             try {
 
                 int index = Integer.parseInt(arg) - 1;
-                if (!taskHandler.removeTaskFromList(index)) {
+
+
+                if (!taskHandler.markTaskAsDeleted(index)) {
                     return ("There is no such TODO");
                 }
                 return "Success";
@@ -73,7 +77,7 @@ public enum Commands {
             try {
                 int index = Integer.parseInt(arg) - 1;
                 if (taskHandler.completeTask(index)) {
-                    return "Successfuly completed";
+                    return "Successfully completed";
                 } else {
                     return "There is no such TODO";
                 }
@@ -92,7 +96,7 @@ public enum Commands {
             try {
                 int index = Integer.parseInt(arg) - 1;
                 if (taskHandler.readTask(index)) {
-                    return "Successfuly read";
+                    return "Successfully read";
                 } else {
                     return "There is no such TODO";
                 }

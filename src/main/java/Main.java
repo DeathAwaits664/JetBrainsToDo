@@ -1,5 +1,8 @@
 import java.io.IOException;
 
+/**
+ * The type Main.
+ */
 public class Main {
 
 

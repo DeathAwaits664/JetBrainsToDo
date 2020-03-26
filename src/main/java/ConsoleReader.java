@@ -1,17 +1,20 @@
 import java.util.Scanner;
 
 public class ConsoleReader {
-    private Scanner scanner;
-    private TaskHandler toDoList;
+    private final Scanner scanner;
+    private final TaskHandler taskHandler;
 
-    public ConsoleReader(TaskHandler toDoList) {
+    public ConsoleReader(TaskHandler taskHandler) {
 
-        this.toDoList = toDoList;
+        this.taskHandler = taskHandler;
         this.scanner = new Scanner(System.in);
 
 
     }
 
+    /**
+     * Starts console reader
+     */
     public void start() {
         System.out.println("You are working with JetBrains TODO-list.\n" +
                 "Enter HELP to learn about the functionality.");
@@ -29,8 +32,14 @@ public class ConsoleReader {
 
             }
         }
+        this.taskHandler.saveList();
     }
 
+    /**
+     * Execute users command
+     *
+     * @param input Input string
+     */
     public void execute(String input) {
 
         String command;
@@ -42,7 +51,7 @@ public class ConsoleReader {
             command = input;
             arg = "";
         }
-        System.out.println(Commands.getByName(command).execute(this.toDoList, arg));
+        System.out.println(Commands.getByName(command).execute(this.taskHandler, arg));
 
     }
 
