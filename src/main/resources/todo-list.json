@@ -2,8 +2,15 @@
   {
     "taskText": "dsadsad",
     "creationTime": 1585230024290,
-    "deleted": false,
     "done": false,
+    "deleted": false,
     "read": false
+  },
+  {
+    "taskText": "QWE",
+    "creationTime": 1585254886912,
+    "done": true,
+    "deleted": false,
+    "read": true
   }
 ]

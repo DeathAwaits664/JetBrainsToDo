@@ -51,7 +51,10 @@ public class ConsoleReader {
             command = input;
             arg = "";
         }
-        System.out.println(Commands.getByName(command).execute(this.taskHandler, arg));
+
+        UserCommands uc = new UserCommands();
+        System.out.println(uc.execute(this.taskHandler, command, arg));
+
 
     }
 
