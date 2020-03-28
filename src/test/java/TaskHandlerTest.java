@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TaskHandlerTest {
@@ -22,14 +22,8 @@ class TaskHandlerTest {
     TaskHandlerTest() throws NoSuchFieldException {
     }
 
-    @Before
-    void setUpAllTest() throws IOException {
-        File file = new File("src/main/resources/todo-list_EMPTY.json");
-        file.createNewFile();
-    }
-
     @BeforeEach
-    void setUp() throws IOException, NoSuchFieldException {
+    void setUp() {
 
 
     }
@@ -42,19 +36,19 @@ class TaskHandlerTest {
 
     //The method tries to get the file at the specified path, if the file does not exist, it creates a new file. The to-do list remains empty.
     @Test
-    void loadListWithoutFile() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithoutFile() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_NOFILE.json");
         List<TaskEntity> taskEntityList = th.loadList();
         File file = new File("src/main/resources/todo-list_NOFILE.json");
-        assertEquals(true, file.exists());
+        assertTrue(file.exists());
         List<TaskEntity> emptyTaskEntityList = new LinkedList<>();
         assertEquals(emptyTaskEntityList, taskEntityList);
 
     }
 
     @Test
-    void loadListWithEmptyFile() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithEmptyFile() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_EMPTY.json");
         List<TaskEntity> taskEntityList = th.loadList();
@@ -64,7 +58,7 @@ class TaskHandlerTest {
     }
 
     @Test
-    void loadListWithLittleLoad() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithLittleLoad() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_LITTLE.json");
         List<TaskEntity> taskEntityList = th.loadList();
@@ -73,7 +67,7 @@ class TaskHandlerTest {
     }
 
     @Test
-    void loadListWithMiddleLoad() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithMiddleLoad() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_MIDDLE.json");
         List<TaskEntity> taskEntityList = th.loadList();
@@ -82,7 +76,7 @@ class TaskHandlerTest {
     }
 
     @Test
-    void loadListWithHighLoad() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithHighLoad() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_HIGH.json");
         List<TaskEntity> taskEntityList = th.loadList();
@@ -91,7 +85,7 @@ class TaskHandlerTest {
     }
 
     @Test
-    void loadListWithHugeLoad() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void loadListWithHugeLoad() throws IOException, IllegalAccessException {
         pathField.setAccessible(true);
         pathField.set(th, "src/main/resources/todo-list_HUGE.json");
         List<TaskEntity> taskEntityList = th.loadList();
@@ -106,7 +100,7 @@ class TaskHandlerTest {
         listField.set(th, new LinkedList<TaskEntity>());
         TaskEntity te = new TaskEntity("HelloTask");
         th.addTaskToList(te);
-        assertEquals(listField.get(this.th), new LinkedList<TaskEntity>(Arrays.asList(te)));
+        assertEquals(listField.get(this.th), new LinkedList<>(Arrays.asList(te)));
 
 
     }
@@ -182,6 +176,7 @@ class TaskHandlerTest {
     @Test
     void printList() throws IllegalAccessException {
         listField.setAccessible(true);
+
         TaskEntity t1 = new TaskEntity("Hello");
         TaskEntity t2 = new TaskEntity("My friend");
         TaskEntity t3 = new TaskEntity("Lorem");
