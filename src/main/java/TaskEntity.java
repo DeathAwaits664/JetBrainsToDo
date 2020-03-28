@@ -32,6 +32,8 @@ public class TaskEntity {
         this.taskText = "";
         this.creationTime = new Date();
         this.isDone = false;
+        this.isRead = false;
+        this.isDeleted = false;
     }
 
     /**
@@ -53,7 +55,7 @@ public class TaskEntity {
      * @param deleted the deleted
      */
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.isDeleted = deleted;
     }
 
     /**
@@ -62,7 +64,7 @@ public class TaskEntity {
      * @return the deleted
      */
     public Boolean getDeleted() {
-        return isDeleted;
+        return this.isDeleted;
     }
 
     /**

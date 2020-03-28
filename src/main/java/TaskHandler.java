@@ -30,9 +30,8 @@ public class TaskHandler {
      * @param path the path to file
      * @throws IOException the io exception
      */
-    public TaskHandler(String path) throws IOException {
+    public TaskHandler(String path) {
         this.path = path;
-        this.taskList = loadList();
 
 
     }
@@ -157,7 +156,8 @@ public class TaskHandler {
         }
         String result = sb.toString();
         if (result.isEmpty()) {
-            return new LinkedList<>();
+            this.taskList = new LinkedList<>();
+            return this.taskList;
 
         } else {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -166,7 +166,8 @@ public class TaskHandler {
                     .constructCollectionType(List.class, TaskEntity.class);
 
 
-            return objectMapper.readValue(result, javaType);
+            this.taskList = objectMapper.readValue(result, javaType);
+            return this.taskList;
         }
 
 
@@ -180,7 +181,6 @@ public class TaskHandler {
      * @return String
      */
     public String saveList() {
-
         this.taskList.removeIf(TaskEntity::getDeleted);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
