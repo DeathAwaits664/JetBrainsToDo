@@ -1,0 +1,16 @@
+[
+  {
+    "taskText": "Hello",
+    "creationTime": 1585503105303,
+    "done": false,
+    "deleted": false,
+    "read": false
+  },
+  {
+    "taskText": "Friend",
+    "creationTime": 1585503105303,
+    "done": false,
+    "deleted": false,
+    "read": false
+  }
+]

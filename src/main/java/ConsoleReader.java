@@ -3,13 +3,9 @@ import java.util.Scanner;
 public class ConsoleReader {
     private final Scanner scanner;
     private final TaskHandler taskHandler;
-
     public ConsoleReader(TaskHandler taskHandler) {
-
         this.taskHandler = taskHandler;
         this.scanner = new Scanner(System.in);
-
-
     }
 
     /**
@@ -42,9 +38,14 @@ public class ConsoleReader {
      */
     public void execute(String input) {
 
+
         String command;
         String arg;
-        if (input.contains("ADD ") || input.contains("REMOVE ") || input.contains("COMPLETE ") || input.contains("READ ") || input.contains("PRINT ")) {
+        if (input.contains("ADD ") ||
+                input.contains("REMOVE ") ||
+                input.contains("COMPLETE ") ||
+                input.contains("READ ") ||
+                input.contains("PRINT ")) {
             command = input.substring(0, input.indexOf(" "));
             arg = input.substring(input.indexOf(" ") + 1);
         } else {
